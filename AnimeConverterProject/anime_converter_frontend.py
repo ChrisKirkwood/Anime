@@ -6,9 +6,7 @@ import anime_converter_backend  # Import the first backend file
 import anime_converter_backend2  # Import the second backend file
 import logging
 import threading  # For threading the GUI
-
-# Rest of the GUI code
-
+from ocr_subtitle_extractor import extract_subtitles_from_video  # Import the OCR script
 
 # Ensure GOOGLE_APPLICATION_CREDENTIALS is set
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:/Anime/credentials.json"
@@ -169,6 +167,24 @@ def start_conversion():
         logging.error(f"Error during conversion: {str(e)}")
         messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
+def start_ocr_thread():
+    threading.Thread(target=run_ocr).start()
+
+def run_ocr():
+    video_path = japanese_file_path.get()
+
+    if not video_path:
+        messagebox.showerror("Error", "Please select a Japanese video file.")
+        return
+
+    subtitles = extract_subtitles_from_video(video_path)
+    if subtitles:
+        messagebox.showinfo("OCR Complete", "Subtitles extracted successfully.")
+        logging.info("Extracted Subtitles:")
+        logging.info("\n".join(subtitles))
+    else:
+        messagebox.showinfo("OCR Complete", "No subtitles were found in the video.")
+
 def main():
     global root, japanese_file_path, output_directory, output_filename
     global progress_bar_audio_extraction, progress_bar_chunking, progress_bar_transcription
@@ -234,6 +250,10 @@ def main():
     # Start Conversion Button
     start_button = tk.Button(root, text="Start Conversion", command=start_conversion_thread, bg="green", fg="white", width=20)
     start_button.pack(pady=20)  # Ensure that the button is visible and properly packed
+
+    # OCR Button
+    ocr_button = tk.Button(root, text="Extract Subtitles (OCR)", command=start_ocr_thread, bg="blue", fg="white", width=20)
+    ocr_button.pack(pady=10)  # Positioning the OCR button below the Start Conversion button
 
     root.mainloop()
 
