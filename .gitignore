@@ -17,3 +17,6 @@ log/
 
 # Ignore credentials
 credentials.json
+
+# Ignore Output/ directory
+output/
