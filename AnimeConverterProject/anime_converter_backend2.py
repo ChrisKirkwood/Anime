@@ -2,6 +2,7 @@ import os
 import logging
 import time
 from google.cloud import texttospeech, speech_v1p1beta1 as speech, translate_v2 as translate
+from google.cloud import storage
 from anime_converter_utils import split_audio_by_size, extract_audio, convert_to_mono, merge_audio_video
 
 # Set up Google Cloud credentials
@@ -15,39 +16,44 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
+def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
+    """Uploads a file to the bucket."""
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+
+    blob.upload_from_filename(source_file_name)
+
+    logging.info(f"File {source_file_name} uploaded to {destination_blob_name}.")
+
+    return f"gs://{bucket_name}/{destination_blob_name}"
+
 def transcribe_audio(audio_path, update_progress=None):
     client = speech.SpeechClient()
     audio_chunks = split_audio_by_size(audio_path)
     total_chunks = len(audio_chunks)
-    max_payload_size = 10485760  # 10 MB
+    bucket_name = "chum_bucket99"  # Replace with your actual GCS bucket name
 
     transcripts = []
-    index = 0
-    while index < len(audio_chunks):
-        chunk = audio_chunks[index]
+    for index, chunk in enumerate(audio_chunks):
         start_time = time.time()
 
-        # Check file size before transcribing
-        while os.path.getsize(chunk) > max_payload_size:
-            logging.warning(f"Chunk {chunk} exceeds 10 MB limit, splitting further.")
-            sub_chunks = split_audio_by_size(chunk, max_size_bytes=max_payload_size)
-            audio_chunks.extend(sub_chunks)
-            audio_chunks.remove(chunk)
-            chunk = sub_chunks[0]  # Proceed with the first sub-chunk
+        # Upload the chunk to GCS and get the URI
+        gcs_uri = upload_to_gcs(bucket_name, chunk, os.path.basename(chunk))
 
-        with open(chunk, 'rb') as audio_file:
-            content = audio_file.read()
-
-        audio = speech.RecognitionAudio(content=content)
+        audio = speech.RecognitionAudio(uri=gcs_uri)
         config = speech.RecognitionConfig(
             encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
             sample_rate_hertz=44100,
             language_code="ja-JP"
         )
 
+        # Use LongRunningRecognize for longer chunks
         logging.debug(f"Starting transcription for chunk {chunk}")
         try:
-            response = client.recognize(config=config, audio=audio, timeout=300)
+            operation = client.long_running_recognize(config=config, audio=audio)
+            response = operation.result(timeout=300)  # Adjust timeout as necessary
+
             for result in response.results:
                 transcripts.append(result.alternatives[0].transcript)
         except Exception as e:
@@ -59,14 +65,14 @@ def transcribe_audio(audio_path, update_progress=None):
 
         if update_progress:
             update_progress['value'] = int((index + 1) / total_chunks * 100)
-        
-        index += 1
 
     full_transcript = ' '.join(transcripts).strip()
     logging.info("Full transcription completed.")
     logging.debug(f"Full transcript: {full_transcript[:500]}...")  # Log the first 500 characters
 
     return full_transcript
+
+
 
 def translate_text(text, update_progress=None):
     try:

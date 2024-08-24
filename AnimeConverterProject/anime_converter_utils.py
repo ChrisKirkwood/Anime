@@ -3,32 +3,39 @@ import logging
 from moviepy.editor import VideoFileClip, AudioFileClip
 from pydub import AudioSegment
 
+from pydub import AudioSegment
+import logging
+
 def split_audio_by_size(audio_path, max_size_bytes=10485760):
     audio = AudioSegment.from_wav(audio_path)
     chunks = []
-    current_chunk = AudioSegment.empty()
-    current_size = 0
+    current_start = 0
+    while current_start < len(audio):
+        # Start with a small chunk
+        chunk_duration_ms = 1000  # 1 second
+        chunk = audio[current_start:current_start + chunk_duration_ms]
+        current_size = len(chunk.raw_data)
+        
+        # Increase the chunk size until it is just under the max limit
+        while current_size < max_size_bytes and (current_start + chunk_duration_ms) < len(audio):
+            chunk_duration_ms += 1000  # increase by 1 second
+            chunk = audio[current_start:current_start + chunk_duration_ms]
+            current_size = len(chunk.raw_data)
 
-    for i in range(len(audio)):
-        current_frame = audio[i]
-        current_chunk += current_frame
-        current_size += len(current_frame.raw_data)
+        # If chunk size exceeds the max limit, use the previous valid chunk
+        if current_size > max_size_bytes:
+            chunk_duration_ms -= 1000
+            chunk = audio[current_start:current_start + chunk_duration_ms]
 
-        if current_size >= max_size_bytes:
-            chunk_path = f"{audio_path}_chunk_{len(chunks)}.wav"
-            current_chunk.export(chunk_path, format="wav")
-            chunks.append(chunk_path)
-            logging.info(f"Created chunk {chunk_path}")
-            current_chunk = AudioSegment.empty()
-            current_size = 0
-
-    if current_size > 0:
         chunk_path = f"{audio_path}_chunk_{len(chunks)}.wav"
-        current_chunk.export(chunk_path, format="wav")
+        chunk.export(chunk_path, format="wav")
         chunks.append(chunk_path)
-        logging.info(f"Created final chunk {chunk_path}")
+        logging.info(f"Created chunk {chunk_path}")
+
+        current_start += chunk_duration_ms
 
     return chunks
+
 
 def extract_audio(video_path):
     try:
