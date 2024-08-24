@@ -20,6 +20,7 @@ credentials.json
 
 # Ignore Output/ directory
 output/
+AnimeVids/
 
 # Ignore large files
 *.zip
