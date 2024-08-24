@@ -20,3 +20,7 @@ credentials.json
 
 # Ignore Output/ directory
 output/
+
+# Ignore large files
+*.zip
+*.wav
