@@ -1,7 +1,14 @@
 import os
 import logging
-from moviepy.editor import VideoFileClip, AudioFileClip
-from pydub import AudioSegment
+from moviepy.editor import VideoFileClip, AudioFileClip  # For video and audio manipulation
+from pydub import AudioSegment  # For audio processing
+from anime_converter_backend2 import transcribe_audio, translate_text, synthesize_speech  # Backend processing functions
+from anime_converter_utils import split_audio_by_size, extract_audio, convert_to_mono, merge_audio_video  # Utility functions
+
+# Core functionalities should be here, calling the utilities
+
+
+
 
 # Global variable to track if a process is already running
 process_running = False
@@ -94,3 +101,20 @@ def merge_audio_video(original_video_path, synthesized_audio_path, output_video_
     except Exception as e:
         logging.error(f"Error during merging: {e}")
         raise e
+
+# Isolated testing functions
+def test_transcription(audio_path):
+    transcript = transcribe_audio(audio_path)
+    print(f"Transcript:\n{transcript}")
+
+def test_translation(text):
+    translated_text = translate_text(text)
+    print(f"Translated Text:\n{translated_text}")
+
+def test_synthesis(text, output_path):
+    synth_path = synthesize_speech(text, output_path)
+    print(f"Audio saved at: {synth_path}")
+
+def test_merging(video_path, audio_path, output_video_path):
+    merge_audio_video(video_path, audio_path, output_video_path)
+    print(f"Video saved at: {output_video_path}")

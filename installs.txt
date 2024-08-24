@@ -1,0 +1,160 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\WINDOWS\system32> cd D:\Anime\AudioConversionEnv
+PS D:\Anime\AudioConversionEnv> cd D:\Anime\AudioConversionEnv\Scripts
+PS D:\Anime\AudioConversionEnv\Scripts> .\Activate
+(AudioConversionEnv) PS D:\Anime\AudioConversionEnv\Scripts> cd D:\Anime\AnimeConverterProject
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> Python main.py
+Traceback (most recent call last):
+  File "D:\Anime\AnimeConverterProject\main.py", line 1, in <module>
+    import anime_converter_frontend
+  File "D:\Anime\AnimeConverterProject\anime_converter_frontend.py", line 6, in <module>
+    import anime_converter_backend
+  File "D:\Anime\AnimeConverterProject\anime_converter_backend.py", line 3, in <module>
+    import pysrt
+ModuleNotFoundError: No module named 'pysrt'
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> (AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install pysrt
+>>
+At line:1 char:22
++ (AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install p ...
++                      ~~
+Unexpected token 'PS' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> cd D:\Anime
+(AudioConversionEnv) PS D:\Anime> (AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install pysrt
+>>
+At line:1 char:22
++ (AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install p ...
++                      ~~
+Unexpected token 'PS' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+
+(AudioConversionEnv) PS D:\Anime> (AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install pysrt
+>>
+At line:1 char:22
++ (AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install p ...
++                      ~~
+Unexpected token 'PS' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+
+(AudioConversionEnv) PS D:\Anime> pip install pysrt
+Collecting pysrt
+  Downloading pysrt-1.1.2.tar.gz (104 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Collecting chardet (from pysrt)
+  Downloading chardet-5.2.0-py3-none-any.whl.metadata (3.4 kB)
+Downloading chardet-5.2.0-py3-none-any.whl (199 kB)
+Building wheels for collected packages: pysrt
+  Building wheel for pysrt (pyproject.toml) ... done
+  Created wheel for pysrt: filename=pysrt-1.1.2-py3-none-any.whl size=13461 sha256=7cd28796e6b923f21a4881589e4b3997be842295d79070e5a22837daf567c615
+  Stored in directory: c:\users\chris\appdata\local\pip\cache\wheels\6a\36\54\2aa8dc961885dfa7b0ebd45a57505f25039d79b4ea0fd9f29d
+Successfully built pysrt
+Installing collected packages: chardet, pysrt
+Successfully installed chardet-5.2.0 pysrt-1.1.2
+(AudioConversionEnv) PS D:\Anime> cd D:\Anime\AnimeConverterProject
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> Python main.py
+Traceback (most recent call last):
+  File "D:\Anime\AnimeConverterProject\main.py", line 1, in <module>
+    import anime_converter_frontend
+  File "D:\Anime\AnimeConverterProject\anime_converter_frontend.py", line 6, in <module>
+    import anime_converter_backend
+  File "D:\Anime\AnimeConverterProject\anime_converter_backend.py", line 6, in <module>
+    from pydub import AudioSegment
+ModuleNotFoundError: No module named 'pydub'
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> ^C
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install pydub
+Collecting pydub
+  Downloading pydub-0.25.1-py2.py3-none-any.whl.metadata (1.4 kB)
+Downloading pydub-0.25.1-py2.py3-none-any.whl (32 kB)
+Installing collected packages: pydub
+Successfully installed pydub-0.25.1
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install pysrt
+Requirement already satisfied: pysrt in d:\anime\audioconversionenv\lib\site-packages (1.1.2)
+Requirement already satisfied: chardet in d:\anime\audioconversionenv\lib\site-packages (from pysrt) (5.2.0)
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install google-cloud-speech
+Requirement already satisfied: google-cloud-speech in d:\anime\audioconversionenv\lib\site-packages (2.27.0)
+Requirement already satisfied: google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (2.19.1)
+Requirement already satisfied: google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-speech) (2.32.0)
+Requirement already satisfied: proto-plus<2.0.0dev,>=1.22.3 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-speech) (1.24.0)
+Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<6.0.0dev,>=3.20.2 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-speech) (5.27.3)
+Requirement already satisfied: googleapis-common-protos<2.0.dev0,>=1.56.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (1.63.2)
+Requirement already satisfied: requests<3.0.0.dev0,>=2.18.0 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (2.32.3)
+Requirement already satisfied: grpcio<2.0dev,>=1.33.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (1.65.4)
+Requirement already satisfied: grpcio-status<2.0.dev0,>=1.33.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (1.65.4)
+Requirement already satisfied: cachetools<6.0,>=2.0.0 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-speech) (5.4.0)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-speech) (0.4.0)
+Requirement already satisfied: rsa<5,>=3.1.4 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-speech) (4.9)
+Requirement already satisfied: pyasn1<0.7.0,>=0.4.6 in d:\anime\audioconversionenv\lib\site-packages (from pyasn1-modules>=0.2.1->google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-speech) (0.6.0)
+Requirement already satisfied: charset-normalizer<4,>=2 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (3.7)
+Requirement already satisfied: urllib3<3,>=1.21.1 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (2.2.2)
+Requirement already satisfied: certifi>=2017.4.17 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-speech) (2024.7.4)
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install google-cloud-translate
+Requirement already satisfied: google-cloud-translate in d:\anime\audioconversionenv\lib\site-packages (3.15.5)
+Requirement already satisfied: google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (2.19.1)
+Requirement already satisfied: google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-translate) (2.32.0)
+Requirement already satisfied: google-cloud-core<3.0.0dev,>=1.4.4 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-translate) (2.4.1)
+Requirement already satisfied: proto-plus<2.0.0dev,>=1.22.3 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-translate) (1.24.0)
+Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<6.0.0dev,>=3.20.2 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-translate) (5.27.3)
+Requirement already satisfied: googleapis-common-protos<2.0.dev0,>=1.56.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (1.63.2)
+Requirement already satisfied: requests<3.0.0.dev0,>=2.18.0 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (2.32.3)
+Requirement already satisfied: grpcio<2.0dev,>=1.33.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (1.65.4)
+Requirement already satisfied: grpcio-status<2.0.dev0,>=1.33.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (1.65.4)
+Requirement already satisfied: cachetools<6.0,>=2.0.0 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-translate) (5.4.0)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-translate) (0.4.0)
+Requirement already satisfied: rsa<5,>=3.1.4 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-translate) (4.9)
+Requirement already satisfied: pyasn1<0.7.0,>=0.4.6 in d:\anime\audioconversionenv\lib\site-packages (from pyasn1-modules>=0.2.1->google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-translate) (0.6.0)
+Requirement already satisfied: charset-normalizer<4,>=2 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (3.7)
+Requirement already satisfied: urllib3<3,>=1.21.1 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (2.2.2)
+Requirement already satisfied: certifi>=2017.4.17 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-translate) (2024.7.4)
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install google-cloud-texttospeech
+Requirement already satisfied: google-cloud-texttospeech in d:\anime\audioconversionenv\lib\site-packages (2.16.5)
+Requirement already satisfied: google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (2.19.1)
+Requirement already satisfied: google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-texttospeech) (2.32.0)
+Requirement already satisfied: proto-plus<2.0.0dev,>=1.22.3 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-texttospeech) (1.24.0)
+Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<6.0.0dev,>=3.20.2 in d:\anime\audioconversionenv\lib\site-packages (from google-cloud-texttospeech) (5.27.3)
+Requirement already satisfied: googleapis-common-protos<2.0.dev0,>=1.56.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (1.63.2)
+Requirement already satisfied: requests<3.0.0.dev0,>=2.18.0 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (2.32.3)
+Requirement already satisfied: grpcio<2.0dev,>=1.33.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (1.65.4)
+Requirement already satisfied: grpcio-status<2.0.dev0,>=1.33.2 in d:\anime\audioconversionenv\lib\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (1.65.4)
+Requirement already satisfied: cachetools<6.0,>=2.0.0 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-texttospeech) (5.4.0)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-texttospeech) (0.4.0)
+Requirement already satisfied: rsa<5,>=3.1.4 in d:\anime\audioconversionenv\lib\site-packages (from google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-texttospeech) (4.9)
+Requirement already satisfied: pyasn1<0.7.0,>=0.4.6 in d:\anime\audioconversionenv\lib\site-packages (from pyasn1-modules>=0.2.1->google-auth!=2.24.0,!=2.25.0,<3.0.0dev,>=2.14.1->google-cloud-texttospeech) (0.6.0)
+Requirement already satisfied: charset-normalizer<4,>=2 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (3.7)
+Requirement already satisfied: urllib3<3,>=1.21.1 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (2.2.2)
+Requirement already satisfied: certifi>=2017.4.17 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0.0.dev0,>=2.18.0->google-api-core!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-cloud-texttospeech) (2024.7.4)
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install moviepy
+Requirement already satisfied: moviepy in d:\anime\audioconversionenv\lib\site-packages (1.0.3)
+Requirement already satisfied: decorator<5.0,>=4.0.2 in d:\anime\audioconversionenv\lib\site-packages (from moviepy) (4.4.2)
+Requirement already satisfied: tqdm<5.0,>=4.11.2 in d:\anime\audioconversionenv\lib\site-packages (from moviepy) (4.66.5)
+Requirement already satisfied: requests<3.0,>=2.8.1 in d:\anime\audioconversionenv\lib\site-packages (from moviepy) (2.32.3)
+Requirement already satisfied: proglog<=1.0.0 in d:\anime\audioconversionenv\lib\site-packages (from moviepy) (0.1.10)
+Requirement already satisfied: numpy>=1.17.3 in d:\anime\audioconversionenv\lib\site-packages (from moviepy) (2.0.1)
+Requirement already satisfied: imageio<3.0,>=2.5 in d:\anime\audioconversionenv\lib\site-packages (from moviepy) (2.34.2)
+Requirement already satisfied: imageio-ffmpeg>=0.2.0 in d:\anime\audioconversionenv\lib\site-packages (from moviepy) (0.5.1)
+Requirement already satisfied: pillow>=8.3.2 in d:\anime\audioconversionenv\lib\site-packages (from imageio<3.0,>=2.5->moviepy) (10.4.0)
+Requirement already satisfied: setuptools in d:\anime\audioconversionenv\lib\site-packages (from imageio-ffmpeg>=0.2.0->moviepy) (72.1.0)
+Requirement already satisfied: charset-normalizer<4,>=2 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0,>=2.8.1->moviepy) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0,>=2.8.1->moviepy) (3.7)
+Requirement already satisfied: urllib3<3,>=1.21.1 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0,>=2.8.1->moviepy) (2.2.2)
+Requirement already satisfied: certifi>=2017.4.17 in d:\anime\audioconversionenv\lib\site-packages (from requests<3.0,>=2.8.1->moviepy) (2024.7.4)
+Requirement already satisfied: colorama in d:\anime\audioconversionenv\lib\site-packages (from tqdm<5.0,>=4.11.2->moviepy) (0.4.6)
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install vlc
+ERROR: Could not find a version that satisfies the requirement vlc (from versions: none)
+ERROR: No matching distribution found for vlc
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject> pip install tkinter
+ERROR: Could not find a version that satisfies the requirement tkinter (from versions: none)
+ERROR: No matching distribution found for tkinter
+(AudioConversionEnv) PS D:\Anime\AnimeConverterProject>

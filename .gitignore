@@ -1,0 +1,19 @@
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+
+# Ignore environment directories
+venv/
+AudioConversionEnv/
+
+# Ignore large binary files (you may want to keep some of these)
+*.mp4
+*.wav
+*.zip
+
+# Ignore log files
+log/
+*.log
+
+# Ignore credentials
+credentials.json

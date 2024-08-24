@@ -1,11 +1,14 @@
-#anime_converter_frontend.py
+import json
 import os
 import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
+from tkinter import filedialog, messagebox, ttk  # For GUI
 import anime_converter_backend  # Import the first backend file
 import anime_converter_backend2  # Import the second backend file
 import logging
-import threading
+import threading  # For threading the GUI
+
+# Rest of the GUI code
+
 
 # Ensure GOOGLE_APPLICATION_CREDENTIALS is set
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:/Anime/credentials.json"
@@ -16,6 +19,22 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+
+STATE_FILE_PATH = "D:/Anime/state_tracker.json"
+
+def load_state():
+    if os.path.exists(STATE_FILE_PATH):
+        with open(STATE_FILE_PATH, 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_state(state):
+    with open(STATE_FILE_PATH, 'w') as f:
+        json.dump(state, f)
+
+def reset_state():
+    if os.path.exists(STATE_FILE_PATH):
+        os.remove(STATE_FILE_PATH)
 
 def select_japanese_file():
     file_path = filedialog.askopenfilename(
@@ -60,46 +79,92 @@ def start_conversion():
         if not output_name.lower().endswith(('.mp4', '.mkv', '.avi')):
             output_name += '.mp4'  # Default to .mp4 if no valid extension is provided
 
+        # Load the state
+        state = load_state()
+
         # Step 1: Extract Audio
-        update_progress_bar(progress_bar_audio_extraction, status_label_audio_extraction, "Extracting audio...", 10)
-        extracted_audio_path = anime_converter_backend.extract_audio(video_path)
-        update_progress_bar(progress_bar_audio_extraction, status_label_audio_extraction, "Audio extraction completed", 100)
+        if not state.get("audio_extracted", False):
+            update_progress_bar(progress_bar_audio_extraction, status_label_audio_extraction, "Extracting audio...", 10)
+            extracted_audio_path = anime_converter_backend.extract_audio(video_path)
+            state["audio_extracted"] = True
+            state["extracted_audio_path"] = extracted_audio_path
+            save_state(state)
+            update_progress_bar(progress_bar_audio_extraction, status_label_audio_extraction, "Audio extraction completed", 100)
+        else:
+            extracted_audio_path = state["extracted_audio_path"]
 
         # Step 2: Convert to Mono
-        mono_audio_path = os.path.splitext(extracted_audio_path)[0] + '_mono.wav'
-        anime_converter_backend.convert_to_mono(extracted_audio_path, mono_audio_path)
+        if not state.get("audio_converted_to_mono", False):
+            mono_audio_path = os.path.splitext(extracted_audio_path)[0] + '_mono.wav'
+            anime_converter_backend.convert_to_mono(extracted_audio_path, mono_audio_path)
+            state["audio_converted_to_mono"] = True
+            state["mono_audio_path"] = mono_audio_path
+            save_state(state)
+        else:
+            mono_audio_path = state["mono_audio_path"]
 
         # Step 3: Chunk Audio
-        update_progress_bar(progress_bar_chunking, status_label_chunking, "Chunking audio...", 10)
-        audio_chunks = anime_converter_backend.split_audio_by_size(mono_audio_path)
-        update_progress_bar(progress_bar_chunking, status_label_chunking, "Audio chunking completed", 100)
+        if not state.get("audio_chunked", False):
+            update_progress_bar(progress_bar_chunking, status_label_chunking, "Chunking audio...", 10)
+            audio_chunks = anime_converter_backend.split_audio_by_size(mono_audio_path)
+            state["audio_chunked"] = True
+            state["audio_chunks"] = audio_chunks
+            save_state(state)
+            update_progress_bar(progress_bar_chunking, status_label_chunking, "Audio chunking completed", 100)
+        else:
+            audio_chunks = state["audio_chunks"]
 
         # Step 4: Transcribe Audio
-        update_progress_bar(progress_bar_transcription, status_label_transcription, "Transcribing audio...", 10)
-        transcript = anime_converter_backend2.transcribe_audio(mono_audio_path)
-        update_progress_bar(progress_bar_transcription, status_label_transcription, "Audio transcription completed", 100)
+        if not state.get("audio_transcribed", False):
+            update_progress_bar(progress_bar_transcription, status_label_transcription, "Transcribing audio...", 10)
+            transcript = anime_converter_backend2.transcribe_audio(mono_audio_path)
+            state["audio_transcribed"] = True
+            state["transcript"] = transcript
+            save_state(state)
+            update_progress_bar(progress_bar_transcription, status_label_transcription, "Audio transcription completed", 100)
+        else:
+            transcript = state["transcript"]
 
         # Step 5: Translate Text
-        update_progress_bar(progress_bar_translation, status_label_translation, "Translating text...", 10)
-        translated_text = anime_converter_backend2.translate_text(transcript)
-        update_progress_bar(progress_bar_translation, status_label_translation, "Text translation completed", 100)
+        if not state.get("text_translated", False):
+            update_progress_bar(progress_bar_translation, status_label_translation, "Translating text...", 10)
+            translated_text = anime_converter_backend2.translate_text(transcript)
+            state["text_translated"] = True
+            state["translated_text"] = translated_text
+            save_state(state)
+            update_progress_bar(progress_bar_translation, status_label_translation, "Text translation completed", 100)
+        else:
+            translated_text = state["translated_text"]
 
         # Step 6: Synthesize Speech
-        synthesized_audio_path = os.path.join(output_dir, 'synthesized_audio.wav')
-        update_progress_bar(progress_bar_tts, status_label_tts, "Synthesizing speech...", 10)
-        anime_converter_backend2.synthesize_speech(translated_text, synthesized_audio_path)
-        update_progress_bar(progress_bar_tts, status_label_tts, "Speech synthesis completed", 100)
+        if not state.get("speech_synthesized", False):
+            synthesized_audio_path = os.path.join(output_dir, 'synthesized_audio.wav')
+            update_progress_bar(progress_bar_tts, status_label_tts, "Synthesizing speech...", 10)
+            anime_converter_backend2.synthesize_speech(translated_text, synthesized_audio_path)
+            state["speech_synthesized"] = True
+            state["synthesized_audio_path"] = synthesized_audio_path
+            save_state(state)
+            update_progress_bar(progress_bar_tts, status_label_tts, "Speech synthesis completed", 100)
+        else:
+            synthesized_audio_path = state["synthesized_audio_path"]
 
         # Step 7: Merge Audio and Video
-        update_progress_bar(progress_bar_merge, status_label_merge, "Merging audio and video...", 10)
-        anime_converter_backend.merge_audio_video(video_path, synthesized_audio_path, os.path.join(output_dir, output_name))
-        update_progress_bar(progress_bar_merge, status_label_merge, "Merging audio and video completed", 100)
+        if not state.get("audio_video_merged", False):
+            update_progress_bar(progress_bar_merge, status_label_merge, "Merging audio and video...", 10)
+            anime_converter_backend.merge_audio_video(video_path, synthesized_audio_path, os.path.join(output_dir, output_name))
+            state["audio_video_merged"] = True
+            save_state(state)
+            update_progress_bar(progress_bar_merge, status_label_merge, "Merging audio and video completed", 100)
 
         # Notify Success
         messagebox.showinfo(
             "Success",
             f"Conversion completed successfully!\nOutput saved at:\n{os.path.join(output_dir, output_name)}"
         )
+
+        # Reset state after successful completion
+        reset_state()
+
     except Exception as e:
         logging.error(f"Error during conversion: {str(e)}")
         messagebox.showerror("Error", f"An error occurred: {str(e)}")
