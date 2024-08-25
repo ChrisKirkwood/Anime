@@ -1,12 +1,12 @@
 import json
 import os
 import tkinter as tk
-from tkinter import filedialog, messagebox, ttk  # For GUI
+from tkinter import filedialog, messagebox, ttk
 import anime_converter_backend  # Import the first backend file
 import anime_converter_backend2  # Import the second backend file
 import logging
 import threading  # For threading the GUI
-from ocr_subtitle_extractor import extract_subtitles_from_video  # Import the OCR script
+from ocr_subtitle_extractor import extract_subtitles_with_google_vision  # Import the updated OCR script
 
 # Ensure GOOGLE_APPLICATION_CREDENTIALS is set
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:/Anime/credentials.json"
@@ -54,7 +54,6 @@ def update_progress_bar(progress_bar, status_label, status, progress=0):
     root.update_idletasks()
 
 def start_conversion_thread():
-    # Run the conversion in a separate thread to keep the GUI responsive
     threading.Thread(target=start_conversion).start()
 
 def start_conversion():
@@ -73,11 +72,9 @@ def start_conversion():
             messagebox.showerror("Error", "Please enter an output filename.")
             return
 
-        # Ensure output filename has correct extension
         if not output_name.lower().endswith(('.mp4', '.mkv', '.avi')):
             output_name += '.mp4'  # Default to .mp4 if no valid extension is provided
 
-        # Load the state
         state = load_state()
 
         # Step 1: Extract Audio
@@ -98,6 +95,7 @@ def start_conversion():
             state["audio_converted_to_mono"] = True
             state["mono_audio_path"] = mono_audio_path
             save_state(state)
+            update_progress_bar(progress_bar_audio_extraction, status_label_audio_extraction, "Converted to Mono", 100)
         else:
             mono_audio_path = state["mono_audio_path"]
 
@@ -154,13 +152,10 @@ def start_conversion():
             save_state(state)
             update_progress_bar(progress_bar_merge, status_label_merge, "Merging audio and video completed", 100)
 
-        # Notify Success
         messagebox.showinfo(
             "Success",
             f"Conversion completed successfully!\nOutput saved at:\n{os.path.join(output_dir, output_name)}"
         )
-
-        # Reset state after successful completion
         reset_state()
 
     except Exception as e:
@@ -177,7 +172,7 @@ def run_ocr():
         messagebox.showerror("Error", "Please select a Japanese video file.")
         return
 
-    subtitles = extract_subtitles_from_video(video_path)
+    subtitles = extract_subtitles_with_google_vision(video_path)
     if subtitles:
         messagebox.showinfo("OCR Complete", "Subtitles extracted successfully.")
         logging.info("Extracted Subtitles:")
@@ -196,63 +191,63 @@ def main():
     root.title("Anime Converter")
 
     # Window size and position
-    root.geometry("600x800")  # Increased window size for better spacing and visibility
+    root.geometry("800x1000")  # Increased window size for better spacing and visibility
     root.resizable(True, True)  # Allow the window to be resizable
 
     # Japanese Video File Selection
     japanese_file_path = tk.StringVar()
     tk.Label(root, text="Select Japanese Video File:").pack(pady=(10, 0))
-    tk.Entry(root, textvariable=japanese_file_path, width=50).pack(padx=10)
+    tk.Entry(root, textvariable=japanese_file_path, width=80).pack(padx=10)
     tk.Button(root, text="Browse", command=select_japanese_file).pack(pady=5)
 
     # Output Directory Selection
     output_directory = tk.StringVar(value="D:/Anime/output")
     tk.Label(root, text="Select Output Directory:").pack(pady=(10, 0))
-    tk.Entry(root, textvariable=output_directory, width=50).pack(padx=10)
+    tk.Entry(root, textvariable=output_directory, width=80).pack(padx=10)
     tk.Button(root, text="Browse", command=select_output_directory).pack(pady=5)
 
     # Output Filename Entry
     output_filename = tk.StringVar()
     tk.Label(root, text="Enter Output Filename:").pack(pady=(10, 0))
-    tk.Entry(root, textvariable=output_filename, width=50).pack(padx=10)
+    tk.Entry(root, textvariable=output_filename, width=80).pack(padx=10)
 
     # Progress Bars and Status Labels
     status_label_audio_extraction = tk.Label(root, text="Audio Extraction: Not Started")
     status_label_audio_extraction.pack(pady=(10, 0))
-    progress_bar_audio_extraction = ttk.Progressbar(root, length=500, mode='determinate')
+    progress_bar_audio_extraction = ttk.Progressbar(root, length=700, mode='determinate')
     progress_bar_audio_extraction.pack(pady=(5, 0))
 
     status_label_chunking = tk.Label(root, text="Chunking: Not Started")
     status_label_chunking.pack(pady=(10, 0))
-    progress_bar_chunking = ttk.Progressbar(root, length=500, mode='determinate')
+    progress_bar_chunking = ttk.Progressbar(root, length=700, mode='determinate')
     progress_bar_chunking.pack(pady=(5, 0))
 
     status_label_transcription = tk.Label(root, text="Transcription: Not Started")
     status_label_transcription.pack(pady=(10, 0))
-    progress_bar_transcription = ttk.Progressbar(root, length=500, mode='determinate')
+    progress_bar_transcription = ttk.Progressbar(root, length=700, mode='determinate')
     progress_bar_transcription.pack(pady=(5, 0))
 
     status_label_translation = tk.Label(root, text="Translation: Not Started")
     status_label_translation.pack(pady=(10, 0))
-    progress_bar_translation = ttk.Progressbar(root, length=500, mode='determinate')
+    progress_bar_translation = ttk.Progressbar(root, length=700, mode='determinate')
     progress_bar_translation.pack(pady=(5, 0))
 
     status_label_tts = tk.Label(root, text="Text-to-Speech Synthesis: Not Started")
     status_label_tts.pack(pady=(10, 0))
-    progress_bar_tts = ttk.Progressbar(root, length=500, mode='determinate')
+    progress_bar_tts = ttk.Progressbar(root, length=700, mode='determinate')
     progress_bar_tts.pack(pady=(5, 0))
 
     status_label_merge = tk.Label(root, text="Merging Audio and Video: Not Started")
     status_label_merge.pack(pady=(10, 0))
-    progress_bar_merge = ttk.Progressbar(root, length=500, mode='determinate')
+    progress_bar_merge = ttk.Progressbar(root, length=700, mode='determinate')
     progress_bar_merge.pack(pady=(5, 0))
 
     # Start Conversion Button
-    start_button = tk.Button(root, text="Start Conversion", command=start_conversion_thread, bg="green", fg="white", width=20)
+    start_button = tk.Button(root, text="Start Conversion", command=start_conversion_thread, bg="green", fg="white", width=25)
     start_button.pack(pady=20)  # Ensure that the button is visible and properly packed
 
     # OCR Button
-    ocr_button = tk.Button(root, text="Extract Subtitles (OCR)", command=start_ocr_thread, bg="blue", fg="white", width=20)
+    ocr_button = tk.Button(root, text="Extract Subtitles (OCR)", command=start_ocr_thread, bg="blue", fg="white", width=25)
     ocr_button.pack(pady=10)  # Positioning the OCR button below the Start Conversion button
 
     root.mainloop()

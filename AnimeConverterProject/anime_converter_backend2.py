@@ -4,6 +4,14 @@ import time
 from google.cloud import texttospeech, speech_v1p1beta1 as speech, translate_v2 as translate
 from google.cloud import storage
 from anime_converter_utils import split_audio_by_size, extract_audio, convert_to_mono, merge_audio_video
+from ocr_subtitle_extractor import extract_subtitles_with_google_vision  # Ensure correct function is imported
+
+# OCR processing function
+def process_video_with_ocr(video_path):
+    logging.info(f"Starting OCR processing for video: {video_path}")
+    subtitles = extract_subtitles_with_google_vision(video_path)
+    logging.info(f"OCR processing completed. Extracted subtitles: {len(subtitles)}")
+    return subtitles
 
 # Set up Google Cloud credentials
 if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
@@ -71,8 +79,6 @@ def transcribe_audio(audio_path, update_progress=None):
     logging.debug(f"Full transcript: {full_transcript[:500]}...")  # Log the first 500 characters
 
     return full_transcript
-
-
 
 def translate_text(text, update_progress=None):
     try:

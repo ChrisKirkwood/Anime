@@ -4,11 +4,26 @@ from moviepy.editor import VideoFileClip, AudioFileClip  # For video and audio m
 from pydub import AudioSegment  # For audio processing
 from anime_converter_backend2 import transcribe_audio, translate_text, synthesize_speech  # Backend processing functions
 from anime_converter_utils import split_audio_by_size, extract_audio, convert_to_mono, merge_audio_video  # Utility functions
+from ocr_subtitle_extractor import extract_subtitles_with_google_vision  # Import the updated function name
 
-# Core functionalities should be here, calling the utilities
+def process_video_with_ocr(video_path):
+    logging.info(f"Starting OCR processing for video: {video_path}")
+    subtitles = extract_subtitles_with_google_vision(video_path)
+    logging.info(f"OCR processing completed. Extracted subtitles: {len(subtitles)}")
+    return subtitles
 
-
-
+# OCR processing function
+def handle_ocr_and_synthesize(video_path, output_dir):
+    subtitles = process_video_with_ocr(video_path)
+    if subtitles:
+        translated_subtitles = translate_text("\n".join(subtitles))
+        synthesized_audio_path = os.path.join(output_dir, 'synthesized_subtitles_audio.wav')
+        synthesize_speech(translated_subtitles, synthesized_audio_path)
+        logging.info(f"Synthesized subtitles saved to {synthesized_audio_path}")
+        return synthesized_audio_path
+    else:
+        logging.info("No subtitles found in the video.")
+        return None
 
 # Global variable to track if a process is already running
 process_running = False
