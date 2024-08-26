@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from google.cloud import vision, texttospeech
 import threading
+import subprocess
 
 # Setup logging
 logging.basicConfig(
@@ -164,6 +165,35 @@ def synthesize_speech(text, output_audio_path, progress_bar, status_label):
         logging.error(f"Error during speech synthesis: {e}")
         raise e
 
+def merge_audio_video(video_path, audio_path, output_path):
+    """
+    Merges the provided audio track with the video, replacing the original audio.
+    :param video_path: Path to the original video file.
+    :param audio_path: Path to the new audio file (WAV).
+    :param output_path: Path where the output video will be saved.
+    """
+    try:
+        # Command to merge video and audio using ffmpeg
+        command = [
+            'ffmpeg',
+            '-y',  # Overwrite output file if it exists
+            '-i', video_path,  # Input video file
+            '-i', audio_path,  # Input audio file
+            '-c:v', 'copy',  # Copy the video stream (no re-encoding)
+            '-map', '0:v:0',  # Use the first video stream from the first file
+            '-map', '1:a:0',  # Use the first audio stream from the second file
+            '-shortest',  # Ensure the output duration is the shortest of the inputs
+            output_path  # Output file
+        ]
+
+        logging.info(f"Running command: {' '.join(command)}")
+        subprocess.run(command, check=True)
+        logging.info(f"Successfully merged audio and video. Output saved to {output_path}")
+        messagebox.showinfo("Merge Complete", f"Video and audio merged successfully. Output saved at: {output_path}")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Error merging audio and video: {e}")
+        messagebox.showerror("Error", f"An error occurred while merging audio and video: {e}")
+
 def start_ocr_thread():
     threading.Thread(target=run_ocr).start()
 
@@ -183,12 +213,10 @@ def run_ocr():
         os.makedirs(output_dir)
 
     if not output_name:
-        output_name = "synthesized_subtitles_audio.wav"
-    else:
-        if not output_name.endswith(".wav"):
-            output_name += ".wav"
-
-    output_audio_path = os.path.join(output_dir, output_name)
+        output_name = "synthesized_subtitles"
+    
+    output_audio_path = os.path.join(output_dir, output_name + ".wav")
+    output_video_path = os.path.join(output_dir, output_name + ".mp4")
 
     update_progress_bar(progress_bar_ocr, status_label_ocr, "Extracting Subtitles...", 0)
 
@@ -198,7 +226,10 @@ def run_ocr():
         combined_text = process_with_openai(filtered_text, progress_bar_openai, status_label_openai)
         synthesize_speech(combined_text, output_audio_path, progress_bar_synthesis, status_label_synthesis)
 
-        messagebox.showinfo("OCR and Synthesis Complete", f"Subtitles extracted, processed, and synthesized successfully.\nOutput saved at: {output_audio_path}")
+        # Merge the new audio with the original video
+        merge_audio_video(video_path, output_audio_path, output_video_path)
+
+        messagebox.showinfo("OCR and Synthesis Complete", f"Subtitles extracted, processed, synthesized, and merged successfully.\nOutput saved at: {output_video_path}")
     else:
         messagebox.showinfo("OCR Complete", "No subtitles were found in the video.")
 
